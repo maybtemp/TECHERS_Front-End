@@ -1,4 +1,4 @@
-// Breve descrição das mecânicas para zerar o jogo (derrotar o Ender Dragon) na versão 1.21
+ // Breve descrição das mecânicas para zerar o jogo (derrotar o Ender Dragon) na versão 1.21
 // Breve descrição de 10 mobs do Minecraft (comportamento, habitat e características)
 const dataInfo = [
     "Criatura hostil verde que explode silenciosamente ao se aproximar do jogador, destruindo o ambiente. Não pega fogo durante o dia e teme gatos. Quando atingido por um raio, torna-se um Creeper Carregado, com explosão mais poderosa .",
