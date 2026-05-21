@@ -5,15 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src = Popupinfo.js></script>
-    <style>
-        span {
-            background-color: crimson !important;
-            font-size: 56px !important;
-            
-        }
-    </style>
+
 </head>
 <body>
-    <popup-info data-text="Texto que vai ser recebido pelo constructor"></popup-info>
+    
+    <div>
+    <popup-info>
+        <span>slot="Meu Texto">injeção dinamica via Slot</span>
+    </popup-info>
+    </div>
+
+    <template id="popup-template">
+        <style>
+            .wrapper {position: relative; display: inline-block; font-family:Verdana, Geneva, Tahoma, sans-serif ;}
+            .info {visibility: hidden; width: 200px; background: #2c3e50; color: white; text-align: center; 
+                padding: 10px; border-radius: 6px; position: absolute; z-index: 1; bottom: 125%; left: 50px; margin-left: -100px; opacity: 0;
+            transition: opacity 0.3s;}
+            .icon: hover + .info {
+                visibility: visible; opacity: 1;
+            }
+            img{
+                width: 30px; cursor: pointer;
+            }
+        </style>
+        <span class="wrapper">
+            <span class = "icon" tabindex = "0">
+                img src="M/nao-grita-nao-grita.png" alt="Icone de informacao"
+            </span>
+            <span class="info">
+                <slot name ="meu-texto">Texto ladrao de fallback</slot>
+            </span>
+        </span>
+    </template>
+
 </body>
 </html>
