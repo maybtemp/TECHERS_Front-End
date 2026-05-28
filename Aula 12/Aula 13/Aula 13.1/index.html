@@ -1,29 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Mochila do Aventureiro</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<script src =  "script.js"></script>
 <body>
+    <div class="pagina">
     
-       <form class = "testo">
-        <h1> Mochila do Aventureiro</h1>
-        <input type = "text">
-        <textarea> Item </textarea>
-        <textarea> Descrição</textarea>
-        <input type = "submit">
-        <button></button>
-        <div class = "mochila"> </div>
+       <form class="testo">
+            <h1>Mochila do Aventureiro</h1>
+            <input type="text" id="nome-item" placeholder="Nome do Item" required class = "texto">
+            <textarea id="desc-item" placeholder="Descrição"></textarea>
+          
+            <button type="submit" id="botao">Adicionar</button>
+            
+            <div class="mochila"></div>
        </form> 
-       <div class = "item-card">
 
-       </div>
-       <button class = "btn-descart"> Delete </button>
+       <div class="item-card"></div>
+       <button class="btn-descart">Remover</button>
     
+    </div>
     
-    
+    <script src="script.js"></script>
 </body>
 </html>
