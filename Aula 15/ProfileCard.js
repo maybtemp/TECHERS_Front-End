@@ -1,23 +1,6 @@
-
--- ProfileCard.js
+// A criação do template fora da classe garante que ele seja processado na memória apenas uma vez.
 const template = document.createElement('template');
-template.innerHTML = /*html*/`
-    <style>
-        .card {
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            padding: 20px;
-            width: 250px;
-        }
-    </style>
-    <div class="card">
-        <h2>Augusto</h2>
-        <p>Instrutor</p>
-        <button>Seguir Perfil</button>
-    </div>
-`;
-
-
+// O comentário /*html*/ ativa o syntax highlight se a extensão 'es6-string-html' estiver instalada no VS Code.
 template.innerHTML = /*html*/`
     <style>
         :host {
@@ -59,7 +42,6 @@ template.innerHTML = /*html*/`
             background-color: #2980b9;
         }
     </style>
-
     <div class="card">
         <h2 class="nome">Nome Padrão</h2>
         <p class="cargo">Cargo Padrão</p>
@@ -68,28 +50,53 @@ template.innerHTML = /*html*/`
     </div>
 `;
 
+// A palavra 'export' transforma este arquivo num Módulo ES6, pronto para ser distribuído.
 export class ProfileCard extends HTMLElement {
+    // 1. REATIVIDADE: Informa ao navegador quais atributos devem ser vigiados
     static get observedAttributes() {
         return ['nome', 'cargo'];
     }
-    constructor(){
+    constructor() {
         super();
-        this.attachShadow({mode: 'open'});
+        // Criação do "Campo de Força"
+        this.attachShadow({ mode: 'open' });
+        // Clonagem profunda do esqueleto HTML para dentro do Shadow DOM
         this.shadowRoot.appendChild(template.content.cloneNode(true));
     }
-    attributeChangedCallback(name, oldValue, NewValue) {
-        if(oldValue == newValue) return;
-        if(name === 'nome') {
+    // 2. MUTAÇÃO REATIVA: Disparado sempre que 'nome' ou 'cargo' mudarem
+    attributeChangedCallback(name, oldValue, newValue) {
+        // Otimização: se o valor não mudou, não faz nada
+        if (oldValue === newValue) return;
+        // Atualiza a interface cirurgicamente
+        if (name === 'nome') {
             this.shadowRoot.querySelector('.nome').textContent = newValue || 'Usuário Desconhecido';
-        }if (name === 'cargo'){
-                this.shadowRoot.querySelector('.cargo').textContent = newValue || 'Cargo não informado'
-                }
-        
+        }
+        if (name === 'cargo') {
+            this.shadowRoot.querySelector('.cargo').textContent = newValue || 'Cargo não informado';
+        }
     }
+    // 3. COMUNICAÇÃO (EVENTOS): Disparado quando o componente é inserido na tela
     connectedCallback() {
-        const btn = this.shadowRoot.querySelector('button')
+        const btn = this.shadowRoot.querySelector('button');
+         // Escutando o clique do botão interno
         btn.addEventListener('click', () => {
-            console.log("1, O botão foi clicado DENTRO do componente!")
-        })
+            console.log("1. O botão foi clicado DENTRO do componente!"); // Apareceu?
+            // Criando uma "encomenda" (CustomEvent) para despachar para a aplicação principal
+            const eventoSeguir = new CustomEvent('seguir-clicado', {
+                detail: { 
+                    usuario: this.getAttribute('nome'),
+                    cargo_usuario: this.getAttribute('cargo'),
+                    hora_clique: new Date().toLocaleTimeString()
+                },
+                bubbles: true,   // O evento deve subir pela árvore do DOM
+                composed: true   // CRÍTICO: O evento ganha permissão para atravessar o Shadow DOM!
+            });
+
+            // O próprio componente "grita" o evento para fora
+            this.dispatchEvent(eventoSeguir);
+        });
     }
 }
+
+// Registro do componente isolado dentro da biblioteca
+customElements.define("profile-card", ProfileCard);
